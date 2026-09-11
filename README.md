@@ -52,29 +52,6 @@ ResumeFit AI analyzes a resume against a job description and returns a match sco
 - Python 3.11+
 - Git
 
-### macOS Quick Run
-
-Open a terminal and copy-paste the following commands from the project directory:
-
-```bash
-cd /Users/shahariarishan/Downloads/resumefit-ai-main
-python3 -m venv venv
-source venv/bin/activate
-python -m pip install -r requirements.txt
-SSL_CERT_FILE=$(python -c 'import certifi; print(certifi.where())') python -c "import nltk; [nltk.download(name, quiet=True) for name in ('stopwords', 'punkt', 'punkt_tab')]"
-PORT=5001 python app.py
-```
-
-When the server starts, open this URL in your browser:
-
-```text
-http://127.0.0.1:5001
-```
-
-Keep the terminal open while using the app. To stop the server, press `Ctrl+C`.
-
-The first run downloads the SBERT model (`all-MiniLM-L6-v2`, approximately 90 MB), so startup can take a few minutes. The `models/` classifier files are optional for running the app, but they are required for predicted job roles.
-
 ### Installation
 
 1. **Clone the repository**
@@ -107,7 +84,7 @@ The first run downloads the SBERT model (`all-MiniLM-L6-v2`, approximately 90 MB
 
 5. **Download NLTK data**
    ```bash
-   SSL_CERT_FILE=$(python -c 'import certifi; print(certifi.where())') python -c "import nltk; [nltk.download(name, quiet=True) for name in ('stopwords', 'punkt', 'punkt_tab')]"
+   python -m nltk.downloader stopwords punkt punkt_tab
    ```
 
 6. **Download the model files**
@@ -116,10 +93,10 @@ The first run downloads the SBERT model (`all-MiniLM-L6-v2`, approximately 90 MB
 
 7. **Run the application**
    ```bash
-   PORT=5001 python app.py
+   python app.py
    ```
 
-   The app runs at `http://127.0.0.1:5001`. Port `5001` is used because macOS may already use port `5000` for another service. The first run downloads the SBERT model (~90 MB) automatically.
+   The app runs at `http://localhost:5000`. The first run downloads the SBERT model (~90 MB) automatically.
 
 ## Model Files
 
