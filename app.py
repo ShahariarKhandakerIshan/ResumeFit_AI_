@@ -15,7 +15,6 @@ from src.predictor import load_classifier, predict_job_roles
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 app.config["TEMPLATES_AUTO_RELOAD"] = False
-ADVANCED_FEATURES_ENABLED = os.environ.get("ENABLE_ADVANCED_FEATURES", "false").lower() == "true"
 
 ALLOWED_EXTENSIONS = {"pdf", "docx", "txt"}
 
@@ -32,11 +31,8 @@ except Exception as e:
     print(f"Failed to load SBERT model: {e}")
     sys.exit(1)
 
-# Classifier is part of the full milestone and stays disabled for the 60% demo.
-if ADVANCED_FEATURES_ENABLED:
-    classifier, vectorizers, label_encoder = load_classifier()
-else:
-    classifier, vectorizers, label_encoder = None, None, None
+# Classifier is optional — missing model files produce (None, None, None)
+classifier, vectorizers, label_encoder = load_classifier()
 
 print("Models loaded. Starting server…")
 
@@ -130,7 +126,7 @@ def analyze_resume():
 
     result = analyze(resume_text, job_description, sbert_model)
 
-    if ADVANCED_FEATURES_ENABLED and classifier is not None:
+    if classifier is not None:
         roles = predict_job_roles(
             resume_text,
             classifier,
@@ -152,7 +148,6 @@ def analyze_resume():
             "resume_word_count": result["resume_word_count"],
             "jd_word_count":     result["jd_word_count"],
             "predicted_roles":   roles,
-            "advanced_features_enabled": ADVANCED_FEATURES_ENABLED,
             "resume_text":       resume_text,
         }
     )
@@ -175,7 +170,7 @@ def reanalyze_resume():
 
     result = analyze(resume_text, job_description, sbert_model)
 
-    if ADVANCED_FEATURES_ENABLED and classifier is not None:
+    if classifier is not None:
         roles = predict_job_roles(
             resume_text,
             classifier,
@@ -197,7 +192,6 @@ def reanalyze_resume():
             "resume_word_count": result["resume_word_count"],
             "jd_word_count":     result["jd_word_count"],
             "predicted_roles":   roles,
-            "advanced_features_enabled": ADVANCED_FEATURES_ENABLED,
             "resume_text":       resume_text,
         }
     )

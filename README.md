@@ -62,7 +62,7 @@ python3 -m venv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt
 SSL_CERT_FILE=$(python -c 'import certifi; print(certifi.where())') python -c "import nltk; [nltk.download(name, quiet=True) for name in ('stopwords', 'punkt', 'punkt_tab')]"
-ENABLE_ADVANCED_FEATURES=false PORT=5001 python app.py
+PORT=5001 python app.py
 ```
 
 When the server starts, open this URL in your browser:
@@ -74,12 +74,6 @@ http://127.0.0.1:5001
 Keep the terminal open while using the app. To stop the server, press `Ctrl+C`.
 
 The first run downloads the SBERT model (`all-MiniLM-L6-v2`, approximately 90 MB), so startup can take a few minutes. The `models/` classifier files are optional for running the app, but they are required for predicted job roles.
-
-This command runs the **60% demo milestone**: resume upload, job description input, semantic match score, and basic telemetry. Keyword comparison, improvement tasks, and predicted roles are reserved for the next milestone. To run the complete project later, use the classifier files in `models/` and start the app with:
-
-```bash
-ENABLE_ADVANCED_FEATURES=true PORT=5001 python app.py
-```
 
 ### Installation
 
@@ -122,7 +116,7 @@ ENABLE_ADVANCED_FEATURES=true PORT=5001 python app.py
 
 7. **Run the application**
    ```bash
-   ENABLE_ADVANCED_FEATURES=false PORT=5001 python app.py
+   PORT=5001 python app.py
    ```
 
    The app runs at `http://127.0.0.1:5001`. Port `5001` is used because macOS may already use port `5000` for another service. The first run downloads the SBERT model (~90 MB) automatically.
